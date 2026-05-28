@@ -40,14 +40,14 @@ jobs:
       - name: Publish to VS Code Marketplace
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: pnpm exec vsce publish --no-dependencies --packagePath "orbit-${GITHUB_REF_NAME#v}.vsix"
+        run: pnpm exec vsce publish --no-dependencies --packagePath *.vsix
 
       - name: Publish to OpenVSX
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
-        run: pnpm exec ovsx publish "orbit-${GITHUB_REF_NAME#v}.vsix" --pat "$OVSX_PAT"
+        run: pnpm exec ovsx publish *.vsix --pat "$OVSX_PAT"
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" "orbit-${GITHUB_REF_NAME#v}.vsix" --generate-notes --verify-tag
+        run: gh release create "$GITHUB_REF_NAME" *.vsix --generate-notes --verify-tag
