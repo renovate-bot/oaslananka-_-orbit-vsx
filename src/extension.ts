@@ -57,31 +57,32 @@ export function activate(context: vscode.ExtensionContext): void {
   }
 
   if (config.a2a.autoValidateOnSave) {
+    const validateAgentCard = (document: vscode.TextDocument): void => {
+      if (!/agent-card\.json$/.test(document.fileName)) return;
+      const uri = document.uri;
+      a2aProvider
+        .getClient()
+        .validateAgentCard(uri.fsPath)
+        .then((result) => {
+          const diagnostics: vscode.Diagnostic[] = result.errors.map((msg) => {
+            const diag = new vscode.Diagnostic(
+              new vscode.Range(0, 0, 0, document.lineCount - 1),
+              msg,
+              vscode.DiagnosticSeverity.Error
+            );
+            diag.source = 'Orbit A2A';
+            return diag;
+          });
+          a2aProvider.getDiagnosticCollection().set(uri, diagnostics);
+        })
+        .catch(() => {
+          a2aProvider.getDiagnosticCollection().delete(uri);
+        });
+    };
+
     context.subscriptions.push(
-      vscode.workspace.onDidSaveTextDocument((document) => {
-        if (/agent-card\.json$/.test(document.fileName)) {
-          const uri = document.uri;
-          a2aProvider
-            .getClient()
-            .validateAgentCard(uri.fsPath)
-            .then((result) => {
-              const diagnostics: vscode.Diagnostic[] = result.errors.map((msg) => {
-                const diag = new vscode.Diagnostic(
-                  new vscode.Range(0, 0, 0, document.lineCount - 1),
-                  msg,
-                  vscode.DiagnosticSeverity.Error
-                );
-                diag.source = 'Orbit A2A';
-                return diag;
-              });
-              a2aProvider.getDiagnosticCollection().set(uri, diagnostics);
-            })
-            .catch(() => {
-              // CLI not found or other error — clear diagnostics
-              a2aProvider.getDiagnosticCollection().delete(uri);
-            });
-        }
-      })
+      vscode.workspace.onDidSaveTextDocument(validateAgentCard),
+      vscode.workspace.onDidChangeTextDocument((e) => validateAgentCard(e.document))
     );
   }
 

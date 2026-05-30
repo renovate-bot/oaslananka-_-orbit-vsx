@@ -47,7 +47,8 @@
     "onCommand:orbit.debug.newSession",
     "onCommand:orbit.a2a.validate",
     "onCommand:orbit.mcp.explorer.refresh",
-    "onCommand:orbit.sessions.refresh"
+    "onCommand:orbit.sessions.refresh",
+    "onFileSystem:file"
   ],
   "contributes": {
     "viewsContainers": {
