@@ -69,7 +69,7 @@ export class DebugProvider implements vscode.TreeDataProvider<vscode.TreeItem>, 
   }
 
   openDetailWebview(sessionId: string): void {
-    createDebugDetailWebview(this._context, sessionId);
+    createDebugDetailWebview(this._context, this.client, sessionId);
   }
 
   async refresh(): Promise<void> {
