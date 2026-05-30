@@ -1,7 +1,14 @@
 node_modules/
 dist/
+out/
 *.vsix
 coverage/
 .codex-checkpoints/
 .vscode-test/
 .DS_Store
+
+# Generated JS artifacts (compiled from TypeScript)
+src/**/*.js
+src/**/*.js.map
+test/**/*.js
+test/**/*.js.map
