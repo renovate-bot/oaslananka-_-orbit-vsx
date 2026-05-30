@@ -1,6 +1,9 @@
-import { execFileSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { getJson } from '../../utils/http';
 import type { AgentCard, AgentRegistryEntry, ValidationResult } from './types';
+
+const execFileAsync = promisify(execFile);
 
 export class A2AClient {
   constructor(
@@ -28,11 +31,11 @@ export class A2AClient {
     return getJson<AgentCard>(url, undefined, 15000);
   }
 
-  validateAgentCard(filePath: string): ValidationResult {
+  async validateAgentCard(filePath: string): Promise<ValidationResult> {
     try {
-      execFileSync(this.cliPath, ['validate', filePath], {
-        encoding: 'utf-8',
+      await execFileAsync(this.cliPath, ['validate', filePath], {
         timeout: 30000,
+        encoding: 'utf-8',
       });
       return { valid: true, errors: [] };
     } catch (error) {

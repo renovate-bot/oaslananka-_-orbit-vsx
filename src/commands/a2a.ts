@@ -87,8 +87,10 @@ export function registerA2ACommands(
 
       try {
         const cliPath = a2aProvider.getClient().getCliPath();
-        const { execFileSync } = await import('node:child_process');
-        execFileSync(cliPath, ['scaffold', name, '--adapter', adapter], {
+        const { execFile } = await import('node:child_process');
+        const { promisify } = await import('node:util');
+        const execFileAsync = promisify(execFile);
+        await execFileAsync(cliPath, ['scaffold', name, '--adapter', adapter], {
           encoding: 'utf-8',
         });
         vscode.window.showInformationMessage(`Agent "${name}" scaffolded.`);

@@ -54,21 +54,25 @@ export function activate(context: vscode.ExtensionContext): void {
       vscode.workspace.onDidSaveTextDocument((document) => {
         if (/agent-card\.json$/.test(document.fileName)) {
           const uri = document.uri;
-          try {
-            const result = a2aProvider.getClient().validateAgentCard(uri.fsPath);
-            const diagnostics: vscode.Diagnostic[] = result.errors.map((msg) => {
-              const diag = new vscode.Diagnostic(
-                new vscode.Range(0, 0, 0, document.lineCount - 1),
-                msg,
-                vscode.DiagnosticSeverity.Error
-              );
-              diag.source = 'Orbit A2A';
-              return diag;
+          a2aProvider
+            .getClient()
+            .validateAgentCard(uri.fsPath)
+            .then((result) => {
+              const diagnostics: vscode.Diagnostic[] = result.errors.map((msg) => {
+                const diag = new vscode.Diagnostic(
+                  new vscode.Range(0, 0, 0, document.lineCount - 1),
+                  msg,
+                  vscode.DiagnosticSeverity.Error
+                );
+                diag.source = 'Orbit A2A';
+                return diag;
+              });
+              a2aProvider.getDiagnosticCollection().set(uri, diagnostics);
+            })
+            .catch(() => {
+              // CLI not found or other error — clear diagnostics
+              a2aProvider.getDiagnosticCollection().delete(uri);
             });
-            a2aProvider.getDiagnosticCollection().set(uri, diagnostics);
-          } catch {
-            /* ignore - execSync errors already captured by validateAgentCard */
-          }
         }
       })
     );
