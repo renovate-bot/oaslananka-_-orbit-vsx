@@ -54,6 +54,28 @@ export class McpExplorerProvider
     return element;
   }
 
+  resolveTreeItem(item: McpConnectionItem): vscode.TreeItem {
+    const s = item.server;
+    const pipelines = s.pipelineGroups ?? [];
+    const pipelineInfo =
+      pipelines.length > 0
+        ? `\n\nPipelines:\n${pipelines.map((p) => `  • ${p.name}: ${p.status}`).join('\n')}`
+        : '';
+    const md = new vscode.MarkdownString(
+      `**${s.name}**  \n` +
+        `Status: \`${s.status}\`  \n` +
+        `URL: \`${s.url}\`  \n` +
+        `Uptime: ${s.uptime.toFixed(1)}%  \n` +
+        `Latency: ${s.latencyMs}ms avg  \n` +
+        `Last check: ${s.lastCheck}` +
+        pipelineInfo,
+      true
+    );
+    md.isTrusted = true;
+    item.tooltip = md;
+    return item;
+  }
+
   getChildren(): McpConnectionItem[] | Promise<McpConnectionItem[]> {
     return this.servers.map((s) => new McpConnectionItem(s));
   }

@@ -127,6 +127,23 @@ export class A2AProvider implements vscode.TreeDataProvider<vscode.TreeItem>, vs
     return element;
   }
 
+  resolveTreeItem(item: vscode.TreeItem): vscode.TreeItem {
+    if (item instanceof A2AAgentItem) {
+      const card = item.entry.card;
+      const skills = card.skills ?? [];
+      const md = new vscode.MarkdownString(
+        `**${card.name}** v${card.version}  \n` +
+          `${card.description}  \n` +
+          `Online: \`${item.entry.online}\`  \n` +
+          `Skills: ${skills.length > 0 ? skills.join(', ') : 'none'}`,
+        true
+      );
+      md.isTrusted = true;
+      item.tooltip = md;
+    }
+    return item;
+  }
+
   getChildren(element?: vscode.TreeItem): vscode.TreeItem[] {
     if (!element) {
       const items: vscode.TreeItem[] = [];

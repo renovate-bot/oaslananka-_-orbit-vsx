@@ -120,6 +120,28 @@ export class HealthProvider implements vscode.TreeDataProvider<McpServerItem>, v
     return element;
   }
 
+  resolveTreeItem(item: McpServerItem): vscode.TreeItem {
+    const s = item.server;
+    const pipelines = s.pipelineGroups ?? [];
+    const pipelineInfo =
+      pipelines.length > 0
+        ? `\n\nPipelines:\n${pipelines.map((p) => `  • ${p.name}: ${p.status} (${p.lastRun})`).join('\n')}`
+        : '';
+    const md = new vscode.MarkdownString(
+      `**${s.name}**  \n` +
+        `Status: \`${s.status}\`  \n` +
+        `URL: \`${s.url}\`  \n` +
+        `Uptime: ${s.uptime.toFixed(1)}%  \n` +
+        `Latency: ${s.latencyMs}ms avg  \n` +
+        `Last check: ${s.lastCheck}` +
+        pipelineInfo,
+      true
+    );
+    md.isTrusted = true;
+    item.tooltip = md;
+    return item;
+  }
+
   getChildren(): McpServerItem[] {
     return this.servers.map((s) => new McpServerItem(s));
   }

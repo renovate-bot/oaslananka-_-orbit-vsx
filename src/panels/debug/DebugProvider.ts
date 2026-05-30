@@ -102,6 +102,26 @@ export class DebugProvider implements vscode.TreeDataProvider<vscode.TreeItem>, 
     return element;
   }
 
+  resolveTreeItem(item: vscode.TreeItem): vscode.TreeItem {
+    if (item instanceof DebugSessionItem) {
+      const s = item.session;
+      const fixes = s.fixAttempts ?? [];
+      const cmds = s.terminalCommands ?? [];
+      const md = new vscode.MarkdownString(
+        `**${s.title}**  \n` +
+          `Status: \`${s.status}\`  \n` +
+          `ID: \`${s.id}\`  \n` +
+          `Created: ${s.createdAt}  \n` +
+          `Fix attempts: ${fixes.length}  \n` +
+          `Commands: ${cmds.length}`,
+        true
+      );
+      md.isTrusted = true;
+      item.tooltip = md;
+    }
+    return item;
+  }
+
   getChildren(element?: vscode.TreeItem): vscode.TreeItem[] {
     if (!element) {
       const items: vscode.TreeItem[] = [];
