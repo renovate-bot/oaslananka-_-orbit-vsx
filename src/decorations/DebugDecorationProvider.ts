@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { DebugClient } from '../panels/debug/DebugClient';
+import type { DebugClient } from '../panels/debug/DebugClient';
 import { Logger } from '../utils/logger';
 
 const errorDecorationType = vscode.window.createTextEditorDecorationType({
