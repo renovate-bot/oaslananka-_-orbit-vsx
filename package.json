@@ -292,7 +292,15 @@
           "when": "false"
         },
         {
+          "command": "orbit.health.removeServer",
+          "when": "false"
+        },
+        {
           "command": "orbit.debug.openSession",
+          "when": "false"
+        },
+        {
+          "command": "orbit.debug.closeSession",
           "when": "false"
         },
         {
