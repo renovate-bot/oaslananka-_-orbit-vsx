@@ -25,10 +25,22 @@ export function activate(context: vscode.ExtensionContext): void {
   const statusBar = new StatusBarController(healthProvider);
 
   context.subscriptions.push(
-    vscode.window.registerTreeDataProvider('orbit.health', healthProvider),
-    vscode.window.registerTreeDataProvider('orbit.debug', debugProvider),
-    vscode.window.registerTreeDataProvider('orbit.a2a', a2aProvider),
-    vscode.window.registerTreeDataProvider('orbit.mcp.explorer', mcpProvider)
+    vscode.window.createTreeView('orbit.health', {
+      treeDataProvider: healthProvider,
+      showCollapseAll: false,
+    }),
+    vscode.window.createTreeView('orbit.debug', {
+      treeDataProvider: debugProvider,
+      showCollapseAll: true,
+    }),
+    vscode.window.createTreeView('orbit.a2a', {
+      treeDataProvider: a2aProvider,
+      showCollapseAll: true,
+    }),
+    vscode.window.createTreeView('orbit.mcp.explorer', {
+      treeDataProvider: mcpProvider,
+      showCollapseAll: false,
+    })
   );
 
   registerHealthCommands(context, healthProvider);
