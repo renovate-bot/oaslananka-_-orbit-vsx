@@ -7,8 +7,14 @@ export function registerMcpCommands(
   mcpProvider: McpExplorerProvider
 ): void {
   context.subscriptions.push(
-    vscode.commands.registerCommand(COMMAND_IDS.MCP_EXPLORER_REFRESH, () => {
-      mcpProvider.refresh();
+    vscode.commands.registerCommand(COMMAND_IDS.MCP_EXPLORER_REFRESH, async () => {
+      try {
+        await mcpProvider.refresh();
+      } catch (error) {
+        vscode.window.showErrorMessage(
+          `Refresh failed: ${error instanceof Error ? error.message : String(error)}`
+        );
+      }
     })
   );
 }
