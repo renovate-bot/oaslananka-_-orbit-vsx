@@ -74,6 +74,21 @@
           "name": "A2A Explorer",
           "icon": "$(graph)",
           "contextualTitle": "A2A Agents"
+        },
+        {
+          "id": "orbit.info",
+          "name": "Info",
+          "icon": "$(info)"
+        },
+        {
+          "id": "orbit.sessions",
+          "name": "Sessions",
+          "icon": "$(server)"
+        },
+        {
+          "id": "orbit.tasks",
+          "name": "Tasks",
+          "icon": "$(checklist)"
         }
       ]
     },
