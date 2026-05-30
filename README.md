@@ -18,6 +18,17 @@ Browse your A2A agent registry, validate Agent Card files on save, and scaffold 
 
 ## Requirements
 
+### Publishing (Maintainers)
+
+Releases are published via GitHub Actions. The following secrets must be set in the repository:
+
+| Secret     | Purpose                                                        |
+| ---------- | -------------------------------------------------------------- |
+| `VSCE_PAT` | Personal Access Token for VS Code Marketplace (`vsce publish`) |
+| `OVSX_PAT` | Personal Access Token for Open VSX Registry (`ovsx publish`)   |
+
+### Panel Dependencies
+
 Each panel requires its corresponding MCP server or tool to be running:
 
 | Panel          | Requires                                            |
