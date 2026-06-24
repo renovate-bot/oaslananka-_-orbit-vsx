@@ -410,7 +410,7 @@
         },
         "orbit.debug.showEditorDecorations": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Show debug session frequency hints inline in the editor."
         },
         "orbit.a2a.registryUrl": {
