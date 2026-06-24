@@ -54,8 +54,16 @@ export class DebugClient {
     return this.mcp.toolCall('search_sessions', { query }, validateSessionSearchResult);
   }
 
-  async findSimilarErrors(errorText: string): Promise<DebugSession[]> {
-    const result = await this.mcp.toolCall(
+  async findSimilarErrors(errorText: string, timeoutMs?: number): Promise<DebugSession[]> {
+    const client =
+      timeoutMs === undefined
+        ? this.mcp
+        : new McpJsonRpcClient({
+            endpoint: this.endpoint,
+            headers: () => this.headers,
+            timeout: timeoutMs,
+          });
+    const result = await client.toolCall(
       'find_similar_errors',
       { errorText },
       validateSessionListResult
