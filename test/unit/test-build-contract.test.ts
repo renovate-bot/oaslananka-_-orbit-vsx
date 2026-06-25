@@ -53,4 +53,15 @@ suite('Test Build Contracts', () => {
     assert.ok(source.includes('TEST_HOST_TIMEOUT_MS'));
     assert.ok(source.includes('VS Code test host timed out'));
   });
+
+  test('Should keep package smoke host timeout cleanup aligned with extension tests', () => {
+    const source = fs.readFileSync(path.join(REPO_ROOT, 'test/packageSmoke.ts'), 'utf8');
+
+    assert.ok(source.includes("detached: process.platform !== 'win32'"));
+    assert.ok(source.includes("process.kill(-processId, 'SIGKILL')"));
+    assert.ok(source.includes("'--disable-gpu'"));
+    assert.ok(source.includes("'--disable-dev-shm-usage'"));
+    assert.ok(source.includes('SMOKE_TIMEOUT_MS'));
+    assert.ok(source.includes('VS Code smoke host timed out'));
+  });
 });
