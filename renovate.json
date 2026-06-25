@@ -11,8 +11,21 @@
     {
       "matchManagers": ["npm"],
       "matchDepTypes": ["engines"],
-      "matchPackageNames": ["vscode"],
-      "enabled": false
+      "matchPackageNames": ["vscode", "node"],
+      "enabled": false,
+      "description": "Do not auto-raise the supported VS Code or Node floor."
+    },
+    {
+      "matchPackageNames": ["@types/vscode"],
+      "enabled": false,
+      "description": "VS Code API type floor follows the supported engines.vscode baseline."
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "area:ci", "theme:supply-chain"],
+      "description": "Review major GitHub Action updates manually."
     },
     {
       "matchUpdateTypes": ["patch"],
@@ -23,5 +36,6 @@
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     }
-  ]
+  ],
+  "dependencyDashboard": true
 }
