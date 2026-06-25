@@ -107,14 +107,19 @@ function stopProcessTree(processId: number): void {
     return;
   }
   try {
-    process.kill(processId, 'SIGKILL');
+    process.kill(-processId, 'SIGKILL');
   } catch {
-    // Process already exited.
+    try {
+      process.kill(processId, 'SIGKILL');
+    } catch {
+      // Process already exited.
+    }
   }
 }
 
 async function runVSCode(executablePath: string, args: string[]): Promise<ProcessResult> {
   const child = spawn(executablePath, args, {
+    detached: process.platform !== 'win32',
     env: createElectronHostEnv(process.env),
     shell: false,
   });
@@ -205,7 +210,9 @@ function buildLaunchArgs(
 ): string[] {
   return [
     '--no-sandbox',
+    '--disable-gpu',
     '--disable-gpu-sandbox',
+    '--disable-dev-shm-usage',
     '--disable-updates',
     '--skip-welcome',
     '--skip-release-notes',
