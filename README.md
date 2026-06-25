@@ -20,6 +20,10 @@ artifact. To install a downloaded package from the command line:
 code --install-extension .\orbit-vsx-0.5.7.vsix
 ```
 
+## Product architecture
+
+Orbit connects editor views to external companion services. The extension owns VS Code UI, validation, SecretStorage, Workspace Trust, and local audit output. Companion services own runtime state.
+
 ## Features
 
 ### Health Monitor
@@ -203,6 +207,10 @@ ORBIT_VSCODE_TEST_VERSION=stable pnpm test
 
 Orbit declares `engines.node >=22.0.0`; Node 22 is the minimum runtime lane and
 Node 24 is the current maintainer lane.
+
+## Maintainer documentation
+
+See the files in `docs/` for dependency policy, release governance, observability/privacy, and maintainer roadmap details.
 
 ## Contributing
 
