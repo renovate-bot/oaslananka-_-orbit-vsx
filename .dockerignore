@@ -1,0 +1,9 @@
+.git
+.vscode
+.vscode-test
+.orbit-test-artifacts
+.pnpm-store
+coverage
+dist
+node_modules
+*.vsix
